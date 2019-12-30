@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
 import sec.project.domain.Signup;
 import sec.project.repository.SignupRepository;
+import java.util.List;
 
 @Controller
 public class SignupController {
@@ -14,20 +16,22 @@ public class SignupController {
     @Autowired
     private SignupRepository signupRepository;
 
-    @RequestMapping("*")
-    public String defaultMapping() {
-        return "redirect:/form";
-    }
 
     @RequestMapping(value = "/form", method = RequestMethod.GET)
-    public String loadForm() {
+    public String load() {
+        
         return "form";
+        
     }
 
     @RequestMapping(value = "/form", method = RequestMethod.POST)
-    public String submitForm(@RequestParam String name, @RequestParam String address) {
+    public String submit(@RequestParam String name, @RequestParam String address, Model model) {
+        
         signupRepository.save(new Signup(name, address));
+        List<Signup> signups = signupRepository.findByName(name);
+        model.addAttribute("signups", signups);
         return "done";
+        
     }
 
 }

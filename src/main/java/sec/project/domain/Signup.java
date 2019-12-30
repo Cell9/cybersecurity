@@ -14,7 +14,6 @@ public class Signup extends AbstractPersistable<Long> {
     }
 
     public Signup(String name, String address) {
-        this();
         this.name = name;
         this.address = address;
     }
